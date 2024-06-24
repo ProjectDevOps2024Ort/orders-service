@@ -19,7 +19,7 @@ RUN ./mvnw dependency:go-offline
 
 # Copiar todo el código fuente del proyecto
 COPY src ./src
-COPY target ./target
+# COPY target ./target
 
 # Compilar la aplicación utilizando Maven Wrapper
 RUN ./mvnw clean package -DskipTests
