@@ -24,14 +24,23 @@ COPY src ./src
 # Compilar la aplicación utilizando Maven Wrapper
 RUN ./mvnw clean package -DskipTests
 
+# Para ver el contenido de la carpeta
+RUN echo "Contenido de /app/target/:" && ls -la /app/target
+
 # Etapa 2: Crear la imagen para ejecutar la aplicación
 FROM openjdk:17-jdk-slim
+
+ARG PAYMENT_SERVICE_URL
+ARG SHIPPING_SERVICE_URL
+ARG PRODUCT_SERVICE_URL
 
 # Establecer el directorio de trabajo para la imagen final
 WORKDIR /app
 
 # Copiar el JAR construido en la etapa anterior al contenedor final
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/orders-service-example-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8080
 
 # Definir el comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
